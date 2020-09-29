@@ -1,0 +1,73 @@
+@import '/Users/cwefso/projects/debatable-practice/src/styles/_colors.scss';
+@import '/Users/cwefso/projects/debatable-practice/src/styles/_fonts.scss'; // assuming a styles directory under src/
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #000000;
+  background-image: linear-gradient(397deg, #000000 0%, #434343 107%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.logo, .buttons {
+display: flex;
+flex-direction: row;
+justify-content: space-evenly;
+align-items: center;
+width: 100vw;
+}
+
+.logo {
+  margin-top: 10vh;
+  height: 60vh;
+  font-family: $header;
+  font-size: 4.75em;
+  text-shadow: $glow-white;
+}
+
+.buttons {
+  width: 100vw;
+  height: 30vh;
+}
+
+.create, .join {
+  font-family: $body;
+  font-size: 2em;
+}
+
+.create {
+  text-shadow: $glow-blue;
+  color: $blue;
+}
+
+.join {
+  text-shadow: $glow-green;
+  color: $green;
+}
+
+@media only screen and (max-width: 600px) {
+
+  .logo, .buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100vw;
+    }
+ 
+ }
+
+
