@@ -1,0 +1,36 @@
+@import '/Users/cwefso/projects/debatable-practice/src/styles/_colors.scss';
+@import '/Users/cwefso/projects/debatable-practice/src/styles/_fonts.scss';
+
+.topic {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  color: white;
+}
+
+.topic-img {
+  margin-top: 10vh;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+img {
+  width: 50vw;
+  border-radius: 50%;
+  box-shadow: $glow-white;
+}
+
+h3 {
+  height: 70vh;
+  font-family: $header;
+  font-size: 5.75em;
+  text-shadow: $glow-white;
+}

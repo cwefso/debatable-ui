@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./App.scss";
 import { Switch, Route, withRouter, NavLink } from "react-router-dom";
+import Topic from '../Topic/Topic'
+
 
 function App() {
 	const mainPage = (
@@ -26,7 +28,12 @@ function App() {
 	);
 	return (
 		<Switch>
-			<Route exact path="/" render={() => <div>{mainPage}</div>} />
+			<Route exact path="/" render={() => 
+				<div>
+				{mainPage}
+				</div>
+			} />
+			<Route exact path="/topics" render={() => <Topic />} />
 		</Switch>
 	);
 }
