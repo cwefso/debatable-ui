@@ -194,16 +194,16 @@ class App extends Component {
 					path="/game"
 					render={(props) => (
 						<Game
-							{...props}
-							pubnub={this.pubnub}
-							gameChannel={this.gameChannel}
-							piece={this.state.piece}
-							isRoomCreator={this.state.isRoomCreator}
-							myTurn={this.state.myTurn}
-							xUsername={this.state.xUsername}
-							oUsername={this.state.oUsername}
-							endGame={this.endGame}
-						/>
+            pubnub={this.pubnub}
+            lobbyChannel={this.lobbyChannel}
+						gameChannel={this.gameChannel}
+						piece={this.state.piece}
+						isRoomCreator={this.state.isRoomCreator}
+						myTurn={this.state.myTurn}
+						xUsername={this.state.xUsername}
+						oUsername={this.state.oUsername}
+						endGame={this.endGame}
+					/>
 					)}
 				/>
 			</Switch>
