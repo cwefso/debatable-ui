@@ -17,7 +17,7 @@ class App extends Component {
 		});
 
 		this.state = {
-			playerId: "",
+			piece: "",
 			isPlaying: false,
 			isRoomCreator: false,
 			isDisabled: false,
@@ -38,24 +38,48 @@ class App extends Component {
 
 	componentDidUpdate() {
 		// Check that the player is connected to a channel
-		// if (this.lobbyChannel != null) {
-		// 	this.pubnub.getMessage(this.lobbyChannel, (msg) => {
-		// 		// Start the game once an opponent joins the channel
-		// 		if (msg.message.notRoomCreator) {
-		// 			// Create a different channel for the game
-		// 			this.gameChannel = "debatablegame--" + this.roomId;
+		if (this.lobbyChannel != null) {
+			this.pubnub.getMessage(this.lobbyChannel, (msg) => {
+				// Start the game once an opponent joins the channel
+				if (msg.message.gameReady) {
+					// Create a different channel for the game
+					this.gameChannel = "debatablegame--" + this.roomId;
 
-		// 			this.pubnub.subscribe({
-		// 				channels: [this.gameChannel],
-		// 			});
+					this.pubnub.subscribe({
+						channels: [this.gameChannel],
+					});
 
-		// 			this.setState({
-		// 				isPlaying: true,
-		// 			});
-		// 		}
-		// 	});
+					this.setState({
+						isPlaying: true,
+					});
+
+				}
+			});
+		}
+
+		// if(this.state.isPlaying === true){
+		// 	this.props.history.push('/game')
 		// }
 	}
+
+	setPlaying = () => {
+		this.pubnub
+			.hereNow({
+				channels: [this.lobbyChannel],
+			})
+			.then((response) => {
+				console.log(response.totalOccupancy);
+				if (response.totalOccupancy >= 2) {
+					this.pubnub.publish({
+						message: {
+							gameReady: true,
+						},
+						channel: this.lobbyChannel,
+					});
+					this.props.history.push('/game')
+				}
+			});
+	};
 
 	onPressCreate = (e) => {
 		// Create a random name for the channel
@@ -69,7 +93,7 @@ class App extends Component {
 		});
 
 		this.setState({
-			playerId: shortid.generate().substring(0, 5),
+			piece: "X",
 			isRoomCreator: true,
 			isDisabled: true, // Disable the 'Create' button
 			myTurn: true, // Room creator makes the 1st move
@@ -83,31 +107,50 @@ class App extends Component {
 
 		// Check the number of people in the channel
 		this.pubnub
-			.hereNow({
+		.hereNow({
+			channels: [this.lobbyChannel],
+		})
+		.then((response) => {
+			if(response.totalOccupancy < 2){
+			this.pubnub.subscribe({
 				channels: [this.lobbyChannel],
-			})
-			.then((response) => {
-				if (response.totalOccupancy < 2) {
-					this.pubnub.subscribe({
-						channels: [this.lobbyChannel],
-						withPresence: true,
-					});
-
-					this.setState({
-						playerId: shortid.generate().substring(0, 5),
-					});
-
-					this.pubnub.publish({
-						message: {
-							notRoomCreator: true,
-						},
-						channel: this.lobbyChannel,
-					});
-
-					this.props.history.push('/game')
-				}
+				withPresence: true,
 			});
-	};
+
+			this.setState({
+				piece: "O",
+			});
+
+			this.pubnub.publish({
+				message: {
+					notRoomCreator: true,
+				},
+				channel: this.lobbyChannel,
+			});
+			}
+			else{
+				this.pubnub.subscribe({
+					channels: [this.lobbyChannel],
+					withPresence: true,
+				});
+
+				this.setState({
+					piece: "J",
+					isPlaying: true
+				});
+
+				this.pubnub.publish({
+					message: {
+						notRoomCreator: true,
+					},
+					channel: this.lobbyChannel,
+				});
+			}
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+};
 
 	// Reset everything
 	endGame = () => {
@@ -173,6 +216,7 @@ class App extends Component {
 					endGame={this.endGame}
 					isPlaying={this.state.isPlaying}
 					lobbyChannel={this.lobbyChannel}
+					setPlaying={this.setPlaying}
 					/>}
 				/>
 				<Route
@@ -194,6 +238,7 @@ class App extends Component {
 					path="/game"
 					render={(props) => (
 						<Game
+						{...props}
             pubnub={this.pubnub}
             lobbyChannel={this.lobbyChannel}
 						gameChannel={this.gameChannel}

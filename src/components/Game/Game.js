@@ -24,7 +24,7 @@ class Game extends React.Component {
 				})
 			})
 
-			this.pubnub.getMessage(this.lobbyChannel, (msg) => {
+			this.props.pubnub.getMessage(this.props.lobbyChannel, (msg) => {
 				// Start the game once an opponent joins the channel
 				if (msg.message.gameState) {
 					// Create a different channel for the game

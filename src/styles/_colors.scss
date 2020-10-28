@@ -1,9 +1,12 @@
 $main: white;
 $blue: rgb(0, 136, 170);
 $green: rgb(0, 179, 54);
+$red: rgb(179, 0, 0);
 
 $glow-white: 0 0 1px $main, 0 0 2px $main, 0 0 10px #000000, 0 0 20px #000000, 0 0 10px $main, 0 0 20px $main, 0 0 10px $main;
 
 $glow-blue: 0 0 1px $blue, 0 0 2px $blue, 0 0 10px #000000, 0 0 20px #000000, 0 0 10px $blue, 0 0 20px $blue, 0 0 10px $blue;
 
 $glow-green: 0 0 1px $green, 0 0 2px $green, 0 0 10px #000000, 0 0 20px #000000, 0 0 10px $green, 0 0 20px $green, 0 0 10px $green;
+
+$glow-red: 0 0 1px $red, 0 0 2px $red, 0 0 10px #000000, 0 0 20px #000000, 0 0 10px $red, 0 0 20px $red, 0 0 10px $red;

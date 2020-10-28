@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 // import PropTypes from 'prop-types'
 
 
-function Lobby({gameChannel, roomId, isPlaying, lobbyChannel, pubnub}) {
+function Lobby({gameChannel, roomId, isPlaying, lobbyChannel, pubnub, setPlaying, piece}) {
 
 	const history = useHistory()
 
@@ -30,9 +30,29 @@ function Lobby({gameChannel, roomId, isPlaying, lobbyChannel, pubnub}) {
 	}, [isPlaying])
 
 	if(roomId === null){
-		return <p>{storedId}</p>;
+		return <section>
+			<p>{storedId}</p>
+
+									<button
+										className="start-button"
+										onClick={(e) => setPlaying()}
+									>
+										{" "}
+										Start
+									</button>
+			</section>
 	} else {
-	return <p>{roomId}</p>
+		return <section>
+			<p>{roomId}</p>
+
+									<button
+										className="start-button"
+										onClick={(e) => setPlaying()}
+									>
+										{" "}
+										Start
+									</button>
+			</section>
 	}
 }
 
