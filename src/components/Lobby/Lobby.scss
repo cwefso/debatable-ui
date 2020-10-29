@@ -1,0 +1,58 @@
+@import '/Users/cwefso/projects/debatable-practice/src/styles/_colors.scss';
+@import '/Users/cwefso/projects/debatable-practice/src/styles/_fonts.scss';
+
+button {
+  opacity: 100%;
+}
+
+button {
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.start-buttons {
+  height: 40vh;
+}
+
+.start-button {
+  font-family: $body;
+  font-size: 2em;
+  text-shadow: $glow-green;
+  color: $green;
+}
+
+h2 {
+  font-family: $header;
+  font-size: 1.5em;
+  text-shadow: $glow-white;
+}
+
+.id {
+  font-family: $header;
+  font-size: 4.75em;
+  text-shadow: $glow-white;
+}
+
+.code-holder {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 10vh;
+  height: 60vh;
+  font-family: $header;
+  text-shadow: $glow-white;
+}
+
+@media only screen and (max-width: 600px) {
+
+  .logo, .buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100vw;
+    }
+ 
+ }

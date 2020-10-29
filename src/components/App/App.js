@@ -173,11 +173,11 @@ class App extends Component {
 
 	render() {
 		const mainPage = (
-			<div className="App">
+			<section className="App">
 				<header className="App-header">
-					<div role="logo" className="logo">
+					<section role="logo" className="logo">
 						debatable
-					</div>
+					</section>
 					<section className="buttons">
 						<NavLink
 							to={"/lobby"}
@@ -196,11 +196,11 @@ class App extends Component {
 						</NavLink>
 					</section>
 				</header>
-			</div>
+			</section>
 		);
 		return (
 			<Switch>
-				<Route exact path="/" render={() => <div>{mainPage}</div>} />
+				<Route exact path="/" render={() => <section>{mainPage}</section>} />
 				<Route exact path="/topics" render={(props) => <Topic {...props}/>} />
 				<Route
 					exact

@@ -16,6 +16,7 @@ function Topic(props) {
 
 	const [topic, setTopic] = useState({});
 	const [players, setPlayers] = useState({});
+	const [stage, setStage] =  useState(0);
 
 	const loadTopic = () => {
 		if (props.peice !== "J") {
@@ -26,6 +27,10 @@ function Topic(props) {
 		}
 		return;
 	};
+
+	const setGameStage = () => {
+		setStage(stage + 1)
+	}
 
 	const setBothTopics = () => {
 		fetch("http://localhost:8000/api/v1/players")
@@ -42,6 +47,7 @@ function Topic(props) {
 				<img src={topic.image} alt="topic" />
 			</div>
 			<h3>{topic.name}</h3>
+			<button onClick={() => setGameStage()}>click me</button>
 		</section>
 	);
 
