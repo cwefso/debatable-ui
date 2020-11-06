@@ -23,10 +23,16 @@ const Lobby = ({
 		id: shortid(),
 	});
 	const [players, setPlayers] = useState([]);
+	const [name, setName] = useState("")
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		setPlayers([...players, self]);
+
+		let otherPlayers = players.filter(player => player.id !== self.id)
+
+
+
+		setPlayers([...otherPlayers, self]);
 		console.log(players);
 		pubnub.publish({
 			message: {
@@ -34,9 +40,10 @@ const Lobby = ({
 			},
 			channel: lobbyChannel,
 		});
-		players.filter((player) => player.id !== self.id);
+		setName(self.name)
 		setSelf({
 			name: "",
+			id: userId
 		});
 	};
 
@@ -80,10 +87,9 @@ const Lobby = ({
 					type="text"
 					value={self.name}
 					onChange={(e) => {
-						console.log(self.id);
-
 						setSelf({
-							name: "",
+							name: e.target.value,
+							id: userId
 						});
 					}}
 				/>
