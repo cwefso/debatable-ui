@@ -8,12 +8,15 @@ import Game from "../Game/Game";
 import PubNubReact from "pubnub-react";
 import shortid from "shortid";
 
+const publish = process.env.REACT_APP_API_KEY_PUB;
+const subscribe = process.env.REACT_APP_API_KEY_SUB;
+
 class App extends Component {
 	constructor(props) {
 		super(props);
 		this.pubnub = new PubNubReact({
-			publishKey: "pub-c-7b46f3ec-deeb-4817-9e4d-146bbdd69733",
-			subscribeKey: "sub-c-c9d2f832-01a4-11eb-88da-261b8c980873",
+			publishKey: publish,
+			subscribeKey: subscribe,
 		});
 
 		this.state = {
@@ -22,6 +25,7 @@ class App extends Component {
 			isRoomCreator: false,
 			isDisabled: false,
 			myTurn: false,
+			userName: ""
 		};
 
 		this.lobbyChannel = null;
