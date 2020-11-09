@@ -30,54 +30,44 @@ const Lobby = ({
 
 		let otherPlayers = players.filter(player => player.id !== self.id)
 
-
-
-		setPlayers([...otherPlayers, self]);
-		console.log(players);
 		pubnub.publish({
 			message: {
 				players: [...players, self],
 			},
 			channel: lobbyChannel,
 		});
-		setName(self.name)
-		setSelf({
-			name: "",
-			id: userId
-		});
+
+		// setName(self.name)
+		// setSelf({
+		// 	name: "",
+		// 	id: userId
+		// });
 	};
 
 	useEffect(() => {
-		pubnub.getMessage(lobbyChannel, (msg) => {
-			setPlayers(msg.message.players);
-		});
-		console.log(players);
-	}, [players]);
+		if (lobbyChannel != null) {
+			pubnub.getMessage(lobbyChannel, (msg) => {
+				setPlayers(msg.message.players)
+				console.log("players")
+				// Start the game once isReady is true
+				if (msg.message.isReady) {
+					// Create a different channel for the game
+					gameChannel = "debatablegame--" + roomId;
 
-	// useEffect(() => {
-	// 	if (lobbyChannel != null) {
-	// 		pubnub.getMessage(lobbyChannel, (msg) => {
-	// 			setPlayers(msg.message.players)
-	// 			console.log("players")
-	// 			// Start the game once isReady is true
-	// 			if (msg.message.isReady) {
-	// 				// Create a different channel for the game
-	// 				gameChannel = "debatablegame--" + roomId;
+					pubnub.subscribe({
+						channels: [gameChannel],
+					});
 
-	// 				pubnub.subscribe({
-	// 					channels: [gameChannel],
-	// 				});
+					isPlaying = true;
+					history.push("/game");
+				}
 
-	// 				isPlaying = true;
-	// 				history.push("/game");
-	// 			}
+				// Start the game once an opponent joins the channel
+			});
+		}
+	});
 
-	// 			// Start the game once an opponent joins the channel
-	// 		});
-	// 	}
-	// }, [isPlaying]);
-
-	const userId = self.id;
+	const userId = shortid();
 
 	const main = (
 		<section>
