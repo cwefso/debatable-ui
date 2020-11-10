@@ -3,6 +3,9 @@ import { useHistory } from "react-router-dom";
 // import { Link } from 'react-router-dom'
 // import PropTypes from 'prop-types'
 import "./Lobby.scss";
+import Code from "../Code/Code";
+import UserNameInput from "../UserNameInput/UserNameInput";
+import Roster from "../Roster/Roster";
 import shortid from "shortid";
 
 const Lobby = ({
@@ -27,64 +30,9 @@ const Lobby = ({
 		id: id,
 	});
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-
-		//post to microservice?
-		addToRoster() 
-
-		// pubnub.publish({
-		// 	message: {
-		// 		players: players,
-		// 	},
-		// 	channel: lobbyChannel,
-		// });
-	};
-
-	const addToRoster = () => {
-    const {
-      name, id
-    } = self
-
-    const check = (data) => (data || 'none')
-
-    fetch(
-      'http://localhost:8000/api/v1/lobby', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: check(name),
-          id: check(id)
-        })
-      }
-    )
-  }
-
-	const getPlayers = () => {
-		//fetch from microservice for players,
-      fetch('http://localhost:8000/api/v1/lobby')
-        .then((res) => res.json())
-				.then((result) => setPlayers(result))
-				.then(console.log(players))
-        .catch((err) => console.log(err.message))
-		//set players
-	}
-
-	useEffect(()=>{
-    var handle=setInterval(getPlayers, 3000);    
-
-    return ()=>{
-      clearInterval(handle);
-    }
-  });
-
 	useEffect(() => {
 		if (lobbyChannel != null) {
 			pubnub.getMessage(lobbyChannel, (msg) => {
-				// setPlayers(msg.message.players)
-				// console.log("players")
 				// Start the game once isReady is true
 				if (msg.message.isReady) {
 					// Create a different channel for the game
@@ -97,7 +45,6 @@ const Lobby = ({
 					isPlaying = true;
 					history.push("/game");
 				}
-
 				// Start the game once an opponent joins the channel
 			});
 		}
@@ -105,21 +52,8 @@ const Lobby = ({
 
 	const main = (
 		<section>
-			<form className="userNameInput" onSubmit={handleSubmit}>
-				<label>Player Name</label>
-				<input
-					type="text"
-					value={self.name}
-					onChange={(e) => {
-						setSelf({
-							name: e.target.value,
-							id: id
-						});
-					}}
-				/>
-				<button>Submit</button>
-				<button onClick= {getPlayers}>Players</button>
-			</form>
+			<Roster players={players} setPlayers={setPlayers}/>
+			<UserNameInput players={players} setPlayers={setPlayers}/>
 			<section className="start-buttons">
 				<button className="start-button"> Start</button>
 			</section>
@@ -129,20 +63,14 @@ const Lobby = ({
 	if (roomId === null) {
 		return (
 			<section className="App-header">
-				<section className="code-holder">
-					<h2>Room Code</h2>
-					<section className="id">{storedId}</section>
-				</section>
+				<Code roomId={storedId}/>
 				{main}
 			</section>
 		);
 	} else {
 		return (
 			<section className="App-header">
-				<section className="code-holder">
-					<h2>Room Code</h2>
-					<section className="id">{roomId}</section>
-				</section>
+				<Code roomId={roomId}/>
 				{main}
 			</section>
 		);

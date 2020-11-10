@@ -2,46 +2,36 @@ import React, { useState, useEffect } from "react";
 import "./UserNameInput.scss";
 import shortid from "shortid";
 
+const UserNameInput = () => {
+	const [id, setId] = useState(shortid.generate().substring(0, 5));
 
-const UserNameInput = ({
-  pubnub,
-  lobbyChannel,
-  players,
-  setPlayers
-}) => {
-
-  const userId = shortid()
-
-  const [self, setSelf] = useState({
+	const [self, setSelf] = useState({
 		name: "",
-		id: userId,
-  });
-  
-	const [name, setName] = useState("")
+		id: id,
+	});
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-
-		// let otherPlayers = players.filter(player => player.id !== self.id)
-		pubnub.publish({
-			message: {
-				players: [...players, self],
-			},
-			channel: lobbyChannel,
-		});
-
-		// setPlayers([...players, self]);
-		setName(self.name)
-		setSelf({
-			name: "",
-			id: userId
-		});
-
+		addToRoster();
 	};
 
+	const addToRoster = () => {
+		const { name, id } = self;
+		const check = (data) => data || "none";
+		fetch("http://localhost:8000/api/v1/lobby", {
+			method: "POST",
+			headers: {
+				"content-type": "application/json",
+			},
+			body: JSON.stringify({
+				name: check(name),
+				id: check(id),
+			}),
+		});
+	};
 
-  return (
-<section>
+	return (
+		<section>
 			<form className="userNameInput" onSubmit={handleSubmit}>
 				<label>Player Name</label>
 				<input
@@ -50,17 +40,14 @@ const UserNameInput = ({
 					onChange={(e) => {
 						setSelf({
 							name: e.target.value,
-							id: userId
+							id: id,
 						});
 					}}
 				/>
 				<button>Submit</button>
 			</form>
-			<section className="start-buttons">
-				<button className="start-button"> Start</button>
-			</section>
 		</section>
-  );
-}
+	);
+};
 
 export default UserNameInput;
