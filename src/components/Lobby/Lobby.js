@@ -50,6 +50,16 @@ const Lobby = ({
 		}
 	}, [isPlaying]);
 
+	useEffect(() => {
+    return () => {
+			fetch("http://localhost:8000/api/v1/clear")
+			.then((res) => res.json())
+			.then((result) => setPlayers(result.lobby))
+			.then(console.log("clear"))
+			.catch((err) => console.log(err.message));
+    }
+}, [])
+
 	const main = (
 		<section>
 			<Roster players={players} setPlayers={setPlayers}/>
