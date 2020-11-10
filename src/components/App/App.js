@@ -106,11 +106,11 @@ class App extends Component {
 	};
 
 	joinRoom = (value) => {
-		console.log("hit");
 		this.roomId = value;
 		this.lobbyChannel = "debatablelobby--" + this.roomId;
 
 		// Check the number of people in the channel
+		// if it's less than 2, piece is "O"
 		this.pubnub
 		.hereNow({
 			channels: [this.lobbyChannel],
@@ -135,6 +135,7 @@ class App extends Component {
 			this.props.history.push('/lobby')
 			}
 			else{
+			// if it's more than 2, piece is "J"
 				this.pubnub.subscribe({
 					channels: [this.lobbyChannel],
 					withPresence: true,

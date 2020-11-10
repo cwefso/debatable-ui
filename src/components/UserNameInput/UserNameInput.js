@@ -23,7 +23,6 @@ const UserNameInput = ({
 		e.preventDefault();
 
 		// let otherPlayers = players.filter(player => player.id !== self.id)
-
 		pubnub.publish({
 			message: {
 				players: [...players, self],
@@ -31,9 +30,7 @@ const UserNameInput = ({
 			channel: lobbyChannel,
 		});
 
-		setPlayers([...players, self]);
-
-
+		// setPlayers([...players, self]);
 		setName(self.name)
 		setSelf({
 			name: "",

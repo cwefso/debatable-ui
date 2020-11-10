@@ -18,37 +18,73 @@ const Lobby = ({
 
 	const storedId = localStorage.getItem("roomId");
 
+
+	const [players, setPlayers] = useState([]);
+	const [id, setId] = useState(shortid.generate().substring(0, 5))
+
 	const [self, setSelf] = useState({
 		name: "",
-		id: shortid(),
+		id: id,
 	});
-	const [players, setPlayers] = useState([]);
-	const [name, setName] = useState("")
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		let otherPlayers = players.filter(player => player.id !== self.id)
+		//post to microservice?
+		addToRoster() 
 
-		pubnub.publish({
-			message: {
-				players: [...players, self],
-			},
-			channel: lobbyChannel,
-		});
-
-		// setName(self.name)
-		// setSelf({
-		// 	name: "",
-		// 	id: userId
+		// pubnub.publish({
+		// 	message: {
+		// 		players: players,
+		// 	},
+		// 	channel: lobbyChannel,
 		// });
 	};
+
+	const addToRoster = () => {
+    const {
+      name, id
+    } = self
+
+    const check = (data) => (data || 'none')
+
+    fetch(
+      'http://localhost:8000/api/v1/lobby', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: check(name),
+          id: check(id)
+        })
+      }
+    )
+  }
+
+	const getPlayers = () => {
+		//fetch from microservice for players,
+      fetch('http://localhost:8000/api/v1/lobby')
+        .then((res) => res.json())
+				.then((result) => setPlayers(result))
+				.then(console.log(players))
+        .catch((err) => console.log(err.message))
+		//set players
+	}
+
+	useEffect(()=>{
+    var handle=setInterval(getPlayers, 3000);    
+
+    return ()=>{
+      clearInterval(handle);
+    }
+  });
 
 	useEffect(() => {
 		if (lobbyChannel != null) {
 			pubnub.getMessage(lobbyChannel, (msg) => {
-				setPlayers(msg.message.players)
-				console.log("players")
+				// setPlayers(msg.message.players)
+				// console.log("players")
 				// Start the game once isReady is true
 				if (msg.message.isReady) {
 					// Create a different channel for the game
@@ -65,9 +101,7 @@ const Lobby = ({
 				// Start the game once an opponent joins the channel
 			});
 		}
-	});
-
-	const userId = shortid();
+	}, [isPlaying]);
 
 	const main = (
 		<section>
@@ -79,11 +113,12 @@ const Lobby = ({
 					onChange={(e) => {
 						setSelf({
 							name: e.target.value,
-							id: userId
+							id: id
 						});
 					}}
 				/>
 				<button>Submit</button>
+				<button onClick= {getPlayers}>Players</button>
 			</form>
 			<section className="start-buttons">
 				<button className="start-button"> Start</button>
