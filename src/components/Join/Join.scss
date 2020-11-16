@@ -1,0 +1,31 @@
+@import '/Users/cwefso/projects/debatable-practice/src/styles/_colors.scss';
+@import '/Users/cwefso/projects/debatable-practice/src/styles/_fonts.scss';
+
+.code-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  margin-top: 10vh;
+  font-family: $header;
+  color: $green;
+  text-shadow: $glow-green;
+  font-size: 2em;
+}
+
+input {
+  height: 10vh;
+  border-radius: 5px;
+  width: 30vw;
+  font-size: 2em;
+}
+
+.back {
+  margin-top: 10vh;
+  font-family: $header;
+  text-shadow: $glow-red;
+  color: $red;
+}

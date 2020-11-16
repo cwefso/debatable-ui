@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-// import "./Join.css";
+import "./Join.scss";
+import { NavLink } from "react-router-dom";
 // import PropTypes from 'prop-types';
 
 class Join extends Component {
@@ -38,8 +39,8 @@ class Join extends Component {
   render(){
     const {roomId} = this.state;
     return(
-      <section >
-        <form aria-label="join-room" className="new-comment-form" onSubmit = {this.handleSubmit}>
+      <section className="App-header">
+        <form aria-label="join-room" className="code-input" onSubmit = {this.handleSubmit}>
           <input
             type="text"
             name="roomId"
@@ -48,6 +49,13 @@ class Join extends Component {
             onChange = {this.handleChange}
           />
           <button>Submit</button>
+          <NavLink
+							to={"/"}
+							className="back"
+							style={{ textDecoration: "none" }}
+						>
+							Back
+						</NavLink>
         </form>
       </section>
     )
