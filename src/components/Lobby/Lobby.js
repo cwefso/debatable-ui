@@ -21,9 +21,8 @@ const Lobby = ({
 
 	const storedId = localStorage.getItem("roomId");
 
-
 	const [players, setPlayers] = useState([]);
-	const [id, setId] = useState(shortid.generate().substring(0, 5))
+	const [id, setId] = useState(shortid.generate().substring(0, 5));
 
 	const [self, setSelf] = useState({
 		name: "",
@@ -51,19 +50,23 @@ const Lobby = ({
 	}, [isPlaying]);
 
 	useEffect(() => {
-    return () => {
+		return () => {
 			fetch("http://localhost:8000/api/v1/clear")
-			.then((res) => res.json())
-			.then((result) => setPlayers(result.lobby))
-			.then(console.log("clear"))
-			.catch((err) => console.log(err.message));
-    }
-}, [])
+				.then((res) => res.json())
+				.then((result) => setPlayers(result.lobby))
+				.then(console.log("clear"))
+				.catch((err) => console.log(err.message));
+		};
+	}, []);
 
 	const main = (
 		<section>
-			<Roster players={players} setPlayers={setPlayers}/>
-			<UserNameInput players={players} setPlayers={setPlayers}/>
+			<section className="roster">
+				<Roster players={players} setPlayers={setPlayers} />
+			</section>
+			<section className="name-input">
+				<UserNameInput players={players} setPlayers={setPlayers} />
+			</section>
 			<section className="start-buttons">
 				<button className="start-button"> Start</button>
 			</section>
@@ -73,15 +76,39 @@ const Lobby = ({
 	if (roomId === null) {
 		return (
 			<section className="App-header">
-				<Code roomId={storedId}/>
-				{main}
+				<section className="lobby">
+					<section className="code">
+						<Code roomId={storedId} />
+					</section>
+					<section className="roster">
+						<Roster players={players} setPlayers={setPlayers} />
+					</section>
+					<section className="name-input">
+						<UserNameInput players={players} setPlayers={setPlayers} />
+					</section>
+					<section className="start-buttons">
+						<button className="start-button"> Start</button>
+					</section>
+				</section>
 			</section>
 		);
 	} else {
 		return (
 			<section className="App-header">
-				<Code roomId={roomId}/>
-				{main}
+				<section className="lobby">
+					<section className="code">
+						<Code roomId={roomId} />
+					</section>
+					<section className="roster">
+						<Roster players={players} setPlayers={setPlayers} />
+					</section>
+					<section className="name-input">
+						<UserNameInput players={players} setPlayers={setPlayers} />
+					</section>
+					<section className="start-buttons">
+						<button className="start-button"> Start</button>
+					</section>
+				</section>
 			</section>
 		);
 	}
