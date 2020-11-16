@@ -41,13 +41,11 @@ const Lobby = ({
 						channels: [gameChannel],
 					});
 
-					isPlaying = true;
 					history.push("/game");
 				}
-				// Start the game once an opponent joins the channel
 			});
 		}
-	}, [isPlaying]);
+	}, []);
 
 	useEffect(() => {
 		return () => {
@@ -59,19 +57,6 @@ const Lobby = ({
 		};
 	}, []);
 
-	const main = (
-		<section>
-			<section className="roster">
-				<Roster players={players} setPlayers={setPlayers} />
-			</section>
-			<section className="name-input">
-				<UserNameInput players={players} setPlayers={setPlayers} />
-			</section>
-			<section className="start-buttons">
-				<button className="start-button"> Start</button>
-			</section>
-		</section>
-	);
 
 	if (roomId === null) {
 		return (
@@ -87,7 +72,9 @@ const Lobby = ({
 						<UserNameInput players={players} setPlayers={setPlayers} />
 					</section>
 					<section className="start-buttons">
-						<button className="start-button"> Start</button>
+						<button className="start-button" onClick={setPlaying}>
+							Start
+						</button>
 					</section>
 				</section>
 			</section>
@@ -106,7 +93,7 @@ const Lobby = ({
 						<UserNameInput players={players} setPlayers={setPlayers} />
 					</section>
 					<section className="start-buttons">
-						<button className="start-button"> Start</button>
+						<button className="start-button" onClick={setPlaying}> Start</button>
 					</section>
 				</section>
 			</section>

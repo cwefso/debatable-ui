@@ -8,6 +8,10 @@ import Game from "../Game/Game";
 import PubNubReact from "pubnub-react";
 import shortid from "shortid";
 
+require("dotenv").config({
+  path: `.env`,
+});
+
 const publish = process.env.REACT_APP_API_KEY_PUB;
 const subscribe = process.env.REACT_APP_API_KEY_SUB;
 
@@ -54,17 +58,15 @@ class App extends Component {
 						channels: [this.gameChannel],
 					});
 
-					this.setState({
-						isPlaying: true,
-					});
-
+					if(!this.state.isPlaying){
+						this.setState({
+							isPlaying: true,
+						});
+						this.props.history.push('/game')
+					}
 				}
 			});
-		}
-
-		// if(this.state.isPlaying === true){
-		// 	this.props.history.push('/game')
-		// }
+		}	
 	}
 
 	setPlaying = () => {
@@ -81,7 +83,6 @@ class App extends Component {
 						},
 						channel: this.lobbyChannel,
 					});
-					this.props.history.push('/game')
 				}
 			});
 	};
