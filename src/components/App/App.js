@@ -58,12 +58,10 @@ class App extends Component {
 						channels: [this.gameChannel],
 					});
 
-					if(!this.state.isPlaying){
 						this.setState({
 							isPlaying: true,
 						});
 						this.props.history.push('/game')
-					}
 				}
 			});
 		}	
