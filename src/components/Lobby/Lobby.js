@@ -15,13 +15,14 @@ const Lobby = ({
 	lobbyChannel,
 	pubnub,
 	setPlaying,
-	piece,
+	players,
+	setPlayers
 }) => {
 	const history = useHistory();
 
 	const storedId = localStorage.getItem("roomId");
 
-	const [players, setPlayers] = useState([]);
+	// const [players, setPlayers] = useState([]);
 	const [id, setId] = useState(shortid.generate().substring(0, 5));
 
 	const [self, setSelf] = useState({

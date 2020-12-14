@@ -62,7 +62,7 @@ class Game extends React.Component {
 							/> */}
 							<Topic
 								population={this.state.population} 
-								piece={this.props.piece} 
+								// piece={this.props.piece} 
 								// topics={this.state.topics}
 							/>
 					</div>

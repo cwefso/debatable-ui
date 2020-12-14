@@ -16,23 +16,21 @@ const publish = process.env.REACT_APP_API_KEY_PUB;
 const subscribe = process.env.REACT_APP_API_KEY_SUB;
 
 
-class App extends Component {
-	constructor(props) {
-		super(props);
-		this.pubnub = new PubNubReact({
+const App = () => {
+
+		const pubnub = new PubNubReact({
 			publishKey: "pub-c-7b46f3ec-deeb-4817-9e4d-146bbdd69733",
 			subscribeKey: "sub-c-c9d2f832-01a4-11eb-88da-261b8c980873",
 		});
 
-		this.state = {
-			piece: "",
-			isPlaying: false,
-			isRoomCreator: false,
-			isDisabled: false,
-			myTurn: false,
-			userName: "",
-			players: []
-		};
+		
+			const [piece, setPiece] = useState("")
+			const [isPlaying, setPlaying] = useState(false)
+			const [isRoomCreator, setIsRoomCreator] = useState(false)
+			const [isDisabled, setIsDisabled] = useState(false)
+			const [myTurn, setMyTurn] = useState(false)
+			const [userName, setUserName] = useState(""0
+		
 
 		this.lobbyChannel = null;
 		this.gameChannel = null;
@@ -95,12 +93,6 @@ class App extends Component {
 			});
 	};
 
-	setPlayers = (roster) => {
-		this.setState({
-			players: roster
-		})
-	}
-
 	onPressCreate = (e) => {
 		// Create a random name for the channel
 		this.roomId = shortid.generate().substring(0, 5);
@@ -113,7 +105,7 @@ class App extends Component {
 		});
 
 		this.setState({
-			// piece: "X",
+			piece: "X",
 			isRoomCreator: true,
 			isDisabled: true, // Disable the 'Create' button
 			myTurn: true, // Room creator makes the 1st move
@@ -137,9 +129,9 @@ class App extends Component {
 				withPresence: true,
 			});
 
-			// this.setState({
-			// 	piece: "O",
-			// });
+			this.setState({
+				piece: "O",
+			});
 
 			this.pubnub.publish({
 				message: {
@@ -157,7 +149,7 @@ class App extends Component {
 				});
 
 				this.setState({
-					// piece: "J",
+					piece: "J",
 					isPlaying: true
 				});
 
@@ -178,7 +170,7 @@ class App extends Component {
 	// Reset everything
 	endGame = () => {
 		this.setState({
-			// piece: "",
+			piece: "",
 			isPlaying: false,
 			isRoomCreator: false,
 			isDisabled: false,
@@ -231,7 +223,7 @@ class App extends Component {
 					render={(props) => <Lobby {...props} roomId={this.roomId} 							
 					pubnub={this.pubnub}
 					gameChannel={this.gameChannel}
-					// piece={this.state.piece}
+					piece={this.state.piece}
 					isRoomCreator={this.state.isRoomCreator}
 					myTurn={this.state.myTurn}
 					xUsername={this.state.xUsername}
@@ -240,8 +232,6 @@ class App extends Component {
 					isPlaying={this.state.isPlaying}
 					lobbyChannel={this.lobbyChannel}
 					setPlaying={this.setPlaying}
-					players={this.state.players}
-					setPlayers={this.setPlayers}
 					/>}
 				/>
 				<Route
@@ -249,7 +239,7 @@ class App extends Component {
 					path="/join"
 					render={(props) => <Join {...props} roomId={this.roomId} joinRoom={this.joinRoom} 							pubnub={this.pubnub}
 					gameChannel={this.gameChannel}
-					// piece={this.state.piece}
+					piece={this.state.piece}
 					isRoomCreator={this.state.isRoomCreator}
 					myTurn={this.state.myTurn}
 					xUsername={this.state.xUsername}
@@ -267,13 +257,12 @@ class App extends Component {
             pubnub={this.pubnub}
             lobbyChannel={this.lobbyChannel}
 						gameChannel={this.gameChannel}
-						// piece={this.state.piece}
+						piece={this.state.piece}
 						isRoomCreator={this.state.isRoomCreator}
 						myTurn={this.state.myTurn}
 						xUsername={this.state.xUsername}
 						oUsername={this.state.oUsername}
 						endGame={this.endGame}
-						players={this.state.players}
 					/>
 					)}
 				/>

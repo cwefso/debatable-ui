@@ -3,6 +3,7 @@ import "./Topic.scss";
 // import { Link } from 'react-router-dom'
 // import PropTypes from 'prop-types'
 function Topic(props) {
+	
 	useEffect(() => {
 		loadTopic();
 		const timer = setTimeout(() => {
@@ -15,7 +16,7 @@ function Topic(props) {
 	}, []);
 
 	const [topic, setTopic] = useState({});
-	const [players, setPlayers] = useState({});
+	const [topics, setTopics] = useState([]);
 	const [stage, setStage] =  useState(0);
 
 	const loadTopic = () => {
@@ -35,13 +36,14 @@ function Topic(props) {
 	const setBothTopics = () => {
 		fetch("http://localhost:8000/api/v1/players")
 			.then((res) => res.json())
-			.then((result) => setPlayers(result.players))
+			.then((result) => setTopics(result.players))
 			.catch((err) => console.log(err.message));
 	};
 
 	const judges = props.population <= 2 ? 0 : props.population - 2;
 
-	const displayedTopic = (
+	const displayedTopics = topics.map(topic => {
+		return (
 		<section className="topic" key={topic.key}>
 			<div className="topic-img">
 				<img src={topic.image} alt="topic" />
@@ -49,23 +51,17 @@ function Topic(props) {
 			<h3>{topic.name}</h3>
 			<button onClick={() => setGameStage()}>click me</button>
 		</section>
-	);
+		)
+	});
 
-	if (props.piece === "J") {
+
 		return (
-			<section>
-				<p>Judge View</p>
-				<p>{judges}</p>
+			<section className="topic-holder">
+				{/* <p>Number of judges: {judges}</p> */}
+				{displayedTopics}
 			</section>
 		);
-	} else {
-		return (
-			<section>
-				<p>Number of judges: {judges}</p>
-				{displayedTopic}
-			</section>
-		);
-	}
+	
 }
 
 export default Topic;
